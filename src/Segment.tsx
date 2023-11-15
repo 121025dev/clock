@@ -1,7 +1,6 @@
-import { animated, config, useSpring } from "@react-spring/three";
-import { ThreeElements, useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
-import { DoubleSide, Euler, Group, Object3DEventMap, Vector3 } from "three";
+import { animated, useSpring } from "@react-spring/three";
+import { GroupProps } from "@react-three/fiber";
+import { DoubleSide, Euler, Vector3 } from "three";
 
 const positions = new Float32Array([
   1, 2, 1,
@@ -10,34 +9,34 @@ const positions = new Float32Array([
   -1, -2, 1,
   0, -3, 1,
   1, -2, 1,
-  1, 2, 0,
-  0, 3, 0,
-  -1, 2, 0,
-  -1, -2, 0,
-  0, -3, 0,
-  1, -2, 0,
+  1, 2, -1,
+  0, 3, -1,
+  -1, 2, -1,
+  -1, -2, -1,
+  0, -3, -1,
+  1, -2, -1,
 ]);
 
 const colors = new Float32Array([
-  1, 1, 1, 1,
-  1, 1, 1, 1,
-  1, 1, 1, 1,
-  1, 1, 1, 1,
-  1, 1, 1, 1,
-  1, 1, 1, 1,
-  1, 1, 1, 1,
-  1, 1, 1, 1,
-]);
-
-const normals = new Float32Array([
-  0, 0, 1,
-  0, 0, 1,
-  0, 0, 1,
-  0, 0, 1,
-  0, 0, 1,
-  0, 0, 1,
-  0, 0, 1,
-  0, 0, 1,
+  1, 1, 1,
+  0, 0, 0,
+  // 1, 1, 1,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
+  // 0.05, 0.05, 0.05,
 ]);
 
 const indices = new Uint16Array([
@@ -79,12 +78,12 @@ function HalfSegment({ color, position = new Vector3(0, 0, 0) }: HalfSegment) {
           count={positions.length / 3}
           itemSize={3}
         />
-        {/* <bufferAttribute
+        <bufferAttribute
           attach='attributes-color'
           array={colors}
           count={colors.length / 3}
           itemSize={3}
-        /> */}
+        />
         {/* <bufferAttribute
           attach='attributes-normal'
           array={normals}
@@ -95,38 +94,35 @@ function HalfSegment({ color, position = new Vector3(0, 0, 0) }: HalfSegment) {
           attach="index"
           array={indices}
           count={indices.length}
-          // itemSize={1}
+          itemSize={1}
         />
       </bufferGeometry>
       <meshBasicMaterial
-        // vertexColors
+        vertexColors
         toneMapped={false}
-        color={color}
         side={DoubleSide}
       />
     </mesh>
   );
 }
 
-function Segment() {
-  const [active, setActive] = useState(false);
-  // const ref = useRef<Group<Object3DEventMap>>(null);
+interface Segment extends GroupProps {
+  active: boolean
+}
 
-  const { rotation } = useSpring<{rotation: Euler}>({
-    rotation: active ? [0, 0, 0] : [0, Math.PI, 0]
+function Segment(props: Segment) {
+  const { active } = props;
+  const { animationRotation } = useSpring<{animationRotation: Euler}>({
+    animationRotation: active ? [0, 0, 0] : [0, Math.PI, 0]
   });
 
-  // useFrame(({ clock }) => {
-  //   if(ref.current) {
-  //     ref.current.rotation.y = clock.getElapsedTime();
-  //   }
-  // });
-
   return (
-    <animated.group rotation={rotation} onClick={() => {console.log("asdf") ;setActive(!active)}}>
-      <HalfSegment position={new Vector3(0, 0, -1)} color="#888888"/>
-      <HalfSegment color="#FFFFFF"/>
-    </animated.group>
+    <group {...props}>
+      <animated.group rotation={animationRotation}>
+        {/* <HalfSegment position={new Vector3(0, 0, -1)} color="#111111"/> */}
+        <HalfSegment color="#FFFFFF"/>
+      </animated.group>
+    </group>
   );
 }
 
