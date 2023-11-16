@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Digit from "./Digit";
 import { Vector3 } from "three";
 import _ from "lodash";
+import Colon from "./Colon";
 
 const digitPositions = [
   new Vector3(-6, 0, 0),
@@ -30,6 +31,8 @@ function Clock() {
           <Digit key={v} number={parseInt(timeString[v])} position={digitPositions[v]}/>
         );
       })}
+      <Colon position={new Vector3(-2.5, 0, 0)}/>
+      <Colon position={new Vector3(2.5, 0, 0)}/>
     </group>
   );
 }

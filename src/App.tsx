@@ -12,7 +12,6 @@ function App() {
       <Suspense fallback={null}>
         <Clock/>
         <OrbitControls target={[0, 0, 0]}/>
-        <ambientLight/>
       </Suspense>
     </Canvas>
   );
