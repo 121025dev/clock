@@ -83,35 +83,33 @@ function Segment(props: Segment) {
 
   return (
     <group {...props}>
-      <animated.group rotation={animationRotation}>
-        <mesh>
-          <bufferGeometry>
-            <bufferAttribute
-              attach="attributes-position"
-              array={positions}
-              count={positions.length / 3}
-              itemSize={3}
-            />
-            <bufferAttribute
-              attach='attributes-color'
-              array={colors}
-              count={colors.length / 3}
-              itemSize={3}
-            />
-            <bufferAttribute
-              attach="index"
-              array={indices}
-              count={indices.length}
-              itemSize={1}
-            />
-          </bufferGeometry>
-          <meshBasicMaterial
-            vertexColors
-            toneMapped={false}
-            side={DoubleSide}
+      <animated.mesh rotation={animationRotation}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            array={positions}
+            count={positions.length / 3}
+            itemSize={3}
           />
-        </mesh>
-      </animated.group>
+          <bufferAttribute
+            attach='attributes-color'
+            array={colors}
+            count={colors.length / 3}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="index"
+            array={indices}
+            count={indices.length}
+            itemSize={1}
+          />
+        </bufferGeometry>
+        <meshBasicMaterial
+          vertexColors
+          toneMapped={false}
+          side={DoubleSide}
+        />
+      </animated.mesh>
     </group>
   );
 }
